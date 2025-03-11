@@ -1,7 +1,7 @@
 import Sqids from 'sqids';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { IEncoderService } from '../../domain/port/inbound/encoder.interface';
+import { IEncoderService } from '../../domain/port/input/encoder.interface';
 
 @Injectable()
 export class Base62EncoderService implements IEncoderService {

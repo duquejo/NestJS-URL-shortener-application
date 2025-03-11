@@ -1,19 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { UrlEntity } from '../../entity/url.entity';
+import { CacheDatabaseModule } from './cache-database.module';
+import { mysqlClientFactory } from './factory/mysql-client.factory';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => ({
-        type: 'sqlite',
-        database: configService.get('DATABASE_NAME'),
-        entities: [UrlEntity],
-        synchronize: true,
-      }),
+      useFactory: mysqlClientFactory,
       inject: [ConfigService],
     }),
+    CacheDatabaseModule,
   ],
 })
 export class UrlDatabaseModule {}

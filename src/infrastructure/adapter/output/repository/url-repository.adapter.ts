@@ -2,7 +2,7 @@ import { UrlEntity } from '../../../entity/url.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { IUrlRepository } from '../../../../domain/port/outbound/url-repository.interface';
+import type { IUrlRepository } from '../../../../domain/port/output/url-repository.interface';
 
 @Injectable()
 export class UrlRepositoryAdapter implements IUrlRepository {
@@ -19,7 +19,7 @@ export class UrlRepositoryAdapter implements IUrlRepository {
     return this.repository.findOneBy({ longUrl: url });
   }
 
-  async save(partialEntity: Partial<UrlEntity>): Promise<void> {
-    await this.repository.save(partialEntity);
+  async save(partialEntity: Partial<UrlEntity>): Promise<UrlEntity> {
+    return this.repository.save(partialEntity);
   }
 }

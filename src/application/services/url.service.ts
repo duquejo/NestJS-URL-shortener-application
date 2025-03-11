@@ -1,14 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UrlEntity } from '../../infrastructure/entity/url.entity';
 import { CreateRequestDto } from '../../domain/dto/create-request.dto';
-import { IUrlRepository } from '../../domain/port/outbound/url-repository.interface';
-import { IEncoderService } from '../../domain/port/inbound/encoder.interface';
+import { IUrlRepository } from '../../domain/port/output/url-repository.interface';
+import { IEncoderService } from '../../domain/port/input/encoder.interface';
 import { AppLogger } from '../../infrastructure/config/log/console.logger';
+import { ICacheRepository } from '../../domain/port/output/cache-repository.interface';
 
 @Injectable()
 export class UrlService {
   constructor(
     private readonly logger: AppLogger,
+    @Inject(ICacheRepository)
+    private readonly cacheRepository: ICacheRepository,
     @Inject(IEncoderService) private readonly encoderService: IEncoderService,
     @Inject(IUrlRepository) private readonly urlRepository: IUrlRepository,
   ) {
@@ -33,8 +36,11 @@ export class UrlService {
 
     const newUrl = this.buildURLEntity(createRequestDto);
 
-    this.logger.verbose(`Creating new URL [${newUrl.shortUrl}`);
-    await this.urlRepository.save(newUrl);
+    this.logger.verbose(`Creating new URL [${newUrl.shortUrl}]`);
+
+    const newUrlEntity = await this.urlRepository.save(newUrl);
+    await this.cacheRepository.save(newUrlEntity);
+
     return newUrl.shortUrl!;
   }
 
@@ -45,6 +51,13 @@ export class UrlService {
    * @return {Promise<string|null>} Long URL or null if the url isn't found.
    */
   public async findById(id: string): Promise<string | null> {
+    const urlFromCache = await this.cacheRepository.findByKey(id);
+
+    if (urlFromCache) {
+      this.logger.verbose(`URL loaded from cache [${id}]`);
+      return urlFromCache.longUrl;
+    }
+
     const urlEntity = await this.urlRepository.findById(
       this.encoderService.decode(id),
     );
@@ -55,7 +68,22 @@ export class UrlService {
     }
 
     this.logger.verbose(`URL entity found [${urlEntity.shortUrl}]`);
+
+    await this.cacheUrlEntity(urlEntity);
+
     return urlEntity.longUrl;
+  }
+
+  /**
+   * Caches a URL Entity for 60 seconds.
+   *
+   * @private
+   * @param {UrlEntity} urlEntity URL Entity.
+   * @return {Promise<void>}
+   */
+  private async cacheUrlEntity(urlEntity: UrlEntity): Promise<void> {
+    this.logger.verbose(`Caching entity... [${urlEntity.shortUrl}]`);
+    await this.cacheRepository.save(urlEntity);
   }
 
   /**

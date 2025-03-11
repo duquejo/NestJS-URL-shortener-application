@@ -1,0 +1,26 @@
+services:
+  mysql:
+    image: mysql:latest
+    env_file:
+      - "./.env.development"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD}
+      - MYSQL_DATABASE=${DATABASE_NAME}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    volumes:
+      - redis_data:/var/lib/redis
+    environment:
+      - REDIS_ARGS=--appendonly yes --save ""
+
+volumes:
+  mysql_data:
+  redis_data:

@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { CreateRequestDto } from '../../../../domain/dto/create-request.dto';
 import { UrlService } from '../../../../application/services/url.service';
+import { ShortUrlValidationPipe } from '../../../../domain/pipe/short-url-validation.pipe';
 
 @Controller('v1')
 export class UrlController {
@@ -21,7 +22,10 @@ export class UrlController {
   }
 
   @Get(':id')
-  async shortUrl(@Res() res: Response, @Param('id') id: string): Promise<void> {
+  async shortUrl(
+    @Res() res: Response,
+    @Param('id', ShortUrlValidationPipe) id: string,
+  ): Promise<void> {
     const url = await this.urlService.findById(id);
 
     if (!url) {
