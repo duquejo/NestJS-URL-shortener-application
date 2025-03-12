@@ -1,19 +1,18 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UrlEntity } from './entity/url.entity';
-import { configSchema } from '../domain/schema/config.schema';
 import { ConfigModule } from '@nestjs/config';
-import { UrlRepositoryAdapter } from './adapter/output/repository/url-repository.adapter';
+import { CqrsModule } from '@nestjs/cqrs';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { configSchema } from '../domain/schema/config.schema';
+
 import { UrlController } from './adapter/input/controller/url.controller';
-import { UrlService } from '../application/services/url.service';
-import { IEncoderService } from '../domain/port/input/encoder.interface';
-import { IUrlRepository } from '../domain/port/output/url-repository.interface';
-import { Base62EncoderService } from '../application/services/base62-encoder.service';
+import { CacheDatabaseModule } from './config/database/cache-database.module';
 import { UrlDatabaseModule } from './config/database/url-database.module';
 import { AppLogger } from './config/log/console.logger';
-import { CacheDatabaseModule } from './config/database/cache-database.module';
-import { CacheRepositoryAdapter } from './adapter/output/repository/cache-repository.adapter';
-import { ICacheRepository } from '../domain/port/output/cache-repository.interface';
+import { cqrsHandlerProvider } from './config/provider/cqrs-handler.provider';
+import { repositoryProvider } from './config/provider/repository.provider';
+import { servicesProvider } from './config/provider/service.provider';
+import { UrlEntity } from './entity/url.entity';
 
 const envFilePath = `.env.${process.env.NODE_ENV}`;
 
@@ -24,26 +23,18 @@ const envFilePath = `.env.${process.env.NODE_ENV}`;
       envFilePath,
       validationSchema: configSchema,
     }),
+    CqrsModule.forRoot(),
+    TypeOrmModule.forFeature([UrlEntity]),
     UrlDatabaseModule,
     CacheDatabaseModule,
-    TypeOrmModule.forFeature([UrlEntity]),
   ],
   providers: [
     AppLogger,
-    UrlService,
-    {
-      provide: IEncoderService,
-      useClass: Base62EncoderService,
-    },
-    {
-      provide: IUrlRepository,
-      useClass: UrlRepositoryAdapter,
-    },
-    {
-      provide: ICacheRepository,
-      useClass: CacheRepositoryAdapter,
-    },
+    ...cqrsHandlerProvider,
+    ...servicesProvider,
+    ...repositoryProvider,
   ],
   controllers: [UrlController],
+  exports: [CqrsModule],
 })
 export class InfrastructureModule {}

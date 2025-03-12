@@ -1,5 +1,6 @@
 import { Inject, Injectable, OnModuleDestroy } from '@nestjs/common';
 import type { Redis } from 'ioredis';
+
 import { ICacheRepository } from '../../../../domain/port/output/cache-repository.interface';
 
 @Injectable()

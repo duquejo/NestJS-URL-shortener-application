@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+
 import { UrlEntity } from '../../../entity/url.entity';
 
 export const mysqlClientFactory = (

@@ -1,8 +1,9 @@
-import { UrlEntity } from '../../../entity/url.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import type { IUrlRepository } from '../../../../domain/port/output/url-repository.interface';
+import { UrlEntity } from '../../../entity/url.entity';
 
 @Injectable()
 export class UrlRepositoryAdapter implements IUrlRepository {

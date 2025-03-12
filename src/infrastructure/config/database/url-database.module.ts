@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { CacheDatabaseModule } from './cache-database.module';
 import { mysqlClientFactory } from './factory/mysql-client.factory';
 

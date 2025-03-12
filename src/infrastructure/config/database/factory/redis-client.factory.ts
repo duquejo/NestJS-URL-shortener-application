@@ -1,5 +1,5 @@
-import { Redis } from 'ioredis';
 import { ConfigService } from '@nestjs/config';
+import { Redis } from 'ioredis';
 
 export const redisClientFactory = (configService: ConfigService) => {
   const redisInstance = new Redis({

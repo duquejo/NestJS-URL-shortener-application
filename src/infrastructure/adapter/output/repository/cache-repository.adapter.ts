@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
+
 import { ICacheRepository } from '../../../../domain/port/output/cache-repository.interface';
 import { UrlEntity } from '../../../entity/url.entity';
 import { RedisDao } from '../dao/redis.dao';
-import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class CacheRepositoryAdapter implements ICacheRepository {

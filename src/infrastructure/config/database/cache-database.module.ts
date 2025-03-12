@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { RedisDao } from '../../adapter/output/dao/redis.dao';
-import { ICacheRepository } from '../../../domain/port/output/cache-repository.interface';
-import { redisClientFactory } from './factory/redis-client.factory';
 import { ConfigService } from '@nestjs/config';
+
+import { ICacheRepository } from '../../../domain/port/output/cache-repository.interface';
+import { RedisDao } from '../../adapter/output/dao/redis.dao';
+
+import { redisClientFactory } from './factory/redis-client.factory';
 
 @Module({
   imports: [],
