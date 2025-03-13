@@ -11,8 +11,13 @@ export const configSchema = Joi.object({
   DATABASE_NAME: Joi.string().required(),
   URL_ENCODER_LENGTH: Joi.number().required(),
   URL_ENCODER_ALPHABET: Joi.string().required(),
+
   REDIS_HOST: Joi.string().required(),
   REDIS_PORT: Joi.number().required(),
+
+  THROTTLE_TTL: Joi.number().required(),
+  THROTTLE_LIMIT: Joi.number().required(),
+
   NODE_ENV: Joi.string()
     .valid(...Object.values(Environment))
     .required(),

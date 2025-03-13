@@ -12,6 +12,7 @@ import { AppLogger } from './config/log/console.logger';
 import { cqrsHandlerProvider } from './config/provider/cqrs-handler.provider';
 import { repositoryProvider } from './config/provider/repository.provider';
 import { servicesProvider } from './config/provider/service.provider';
+import { InMemoryThrottlerModule } from './config/throttler/in-memory-throttler.module';
 import { UrlEntity } from './entity/url.entity';
 
 const envFilePath = `.env.${process.env.NODE_ENV}`;
@@ -23,10 +24,11 @@ const envFilePath = `.env.${process.env.NODE_ENV}`;
       envFilePath,
       validationSchema: configSchema,
     }),
-    CqrsModule.forRoot(),
     TypeOrmModule.forFeature([UrlEntity]),
+    CqrsModule.forRoot(),
     UrlDatabaseModule,
     CacheDatabaseModule,
+    InMemoryThrottlerModule,
   ],
   providers: [
     AppLogger,

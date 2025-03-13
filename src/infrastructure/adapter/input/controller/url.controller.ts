@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Response } from 'express';
@@ -14,8 +15,10 @@ import { ShortenUrlCommand } from '../../../../application/command/shorten-url/s
 import { FindUrlQuery } from '../../../../application/query/find-url/find-url.find-url.query';
 import { CreateRequestDto } from '../../../../domain/dto/create-request.dto';
 import { ShortUrlValidationPipe } from '../../../../domain/pipe/short-url-validation.pipe';
+import { ApplicationThrottleGuard } from '../../../config/throttler/guard/app-throttle.guard';
 
 @Controller('v1')
+@UseGuards(ApplicationThrottleGuard)
 export class UrlController {
   constructor(
     private readonly queryBus: QueryBus,

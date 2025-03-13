@@ -1,4 +1,4 @@
-
+# @TODO: Add a rate limiter.
 # URL Shortener architectural-reliable POC
 Design System Interview V1 (Book) practical hands-on use-case exercise.
 
@@ -7,17 +7,41 @@ Design System Interview V1 (Book) practical hands-on use-case exercise.
 
 ## Project setup
 
-**Pull & Mount docker dev-dependencies**: It will download the required MySQL & Redis architecture dependencies.
+**Duplicate `.env.example` file and rename it as `.env.development` or the env that you need to configure.**
+
+**Fill all the mandatory environment variables:**
+
+```dotenv
+DATABASE_NAME='urls database name'
+DATABASE_HOST='urls database host'
+DATABASE_PORT='urls database port'
+DATABASE_USERNAME='urls database username'
+DATABASE_PASSWORD='urls database password'
+DATABASE_LOGGING_ENABLED='should the logging be enabled?'
+
+REDIS_HOST='redis cache host'
+REDIS_PORT='redis cache port'
+
+THROTTLE_TTL='number of milliseconds that each request will last in storage'
+THROTTLE_LIMIT='maximum number of requests within the TTL limit'
+
+URL_ENCODER_ALPHABET='encoder alphabet'
+URL_ENCODER_LENGTH='encoder url minimum length'
+
+PORT='application port'
+```
+
+**Pull & Mount docker dev-dependencies**: It will download the required MySQL & Redis architecture dependencies
 ```bash
 docker compose up -d
 ```
 
-**Install application**
+**Install application:**
 ```bash
 $ yarn install
 ```
 
-**Run TypeORM database migrations**
+**Run TypeORM database migrations:**
 ```bash
 yarn run migration:run
 ```
