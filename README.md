@@ -1,4 +1,3 @@
-# @TODO: Add a rate limiter.
 # URL Shortener architectural-reliable POC
 Design System Interview V1 (Book) practical hands-on use-case exercise.
 
