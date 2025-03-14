@@ -2,7 +2,7 @@
   "name": "uri-shortener-service",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "José Miguel Duque",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -10,6 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "format:silent": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\" --log-level silent",
     "start": "nest start",
+    "prepare": "husky",
     "start:dev": "cross-env NODE_ENV=development nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
