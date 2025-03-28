@@ -9,7 +9,7 @@ import { ShortenUrlCommand } from './shorten-url.command';
 export class ShortenUrlHandler implements ICommandHandler<ShortenUrlCommand> {
   constructor(@Inject(IUrlService) private readonly urlService: IUrlService) {}
 
-  async execute(command: ShortenUrlCommand): Promise<string> {
-    return this.urlService.save(command.shortUrl);
+  async execute(command: ShortenUrlCommand): Promise<string | null> {
+    return this.urlService.save(command.longUrl);
   }
 }

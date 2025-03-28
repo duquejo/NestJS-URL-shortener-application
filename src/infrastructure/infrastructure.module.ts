@@ -7,7 +7,7 @@ import { configSchema } from '../domain/schema/config.schema';
 
 import { UrlController } from './adapter/input/controller/url.controller';
 import { CacheDatabaseModule } from './config/database/cache-database.module';
-import { UrlDatabaseModule } from './config/database/url-database.module';
+import { PersistenceModule } from './config/database/persistence.module';
 import { AppLogger } from './config/log/console.logger';
 import { cqrsHandlerProvider } from './config/provider/cqrs-handler.provider';
 import { repositoryProvider } from './config/provider/repository.provider';
@@ -26,7 +26,7 @@ const envFilePath = `.env.${process.env.NODE_ENV}`;
     }),
     TypeOrmModule.forFeature([UrlEntity]),
     CqrsModule.forRoot(),
-    UrlDatabaseModule,
+    PersistenceModule,
     CacheDatabaseModule,
     InMemoryThrottlerModule,
   ],

@@ -1,14 +1,14 @@
 import { Command } from '@nestjs/cqrs';
 
-export class ShortenUrlCommand extends Command<string> {
-  private readonly _shortUrl: string;
+export class ShortenUrlCommand extends Command<string | null> {
+  private readonly _longUrl: string;
 
-  constructor(shortUrl: string) {
+  constructor(longUrl: string) {
     super();
-    this._shortUrl = shortUrl;
+    this._longUrl = longUrl;
   }
 
-  get shortUrl(): string {
-    return this._shortUrl;
+  get longUrl(): string {
+    return this._longUrl;
   }
 }

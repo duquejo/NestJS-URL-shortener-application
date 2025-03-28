@@ -1,8 +1,10 @@
 import { config } from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
+const envFilePath = `.env.${process.env.NODE_ENV}`;
+
 config({
-  path: '.env.development',
+  path: envFilePath,
 });
 
 export const dataSourceOptions: DataSourceOptions = {

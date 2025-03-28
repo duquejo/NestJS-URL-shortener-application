@@ -31,9 +31,14 @@ export class UrlService implements IUrlService {
       return urlFromCache;
     }
 
-    const urlEntity = await this.urlRepository.findById(
-      this.encoderService.decode(id),
-    );
+    const decodedId = this.encoderService.decode(id);
+
+    if (!decodedId) {
+      this.logger.verbose('The short url could not be decoded.');
+      return null;
+    }
+
+    const urlEntity = await this.urlRepository.findById(decodedId);
 
     if (!urlEntity) {
       this.logger.verbose('No url entity found.');
@@ -52,7 +57,7 @@ export class UrlService implements IUrlService {
    * @param {string} longUrl New Short URL Data Transfer Object.
    * @return {string} Long URL.
    */
-  public async save(longUrl: string): Promise<string> {
+  public async save(longUrl: string): Promise<string | null> {
     const urlEntity = await this.urlRepository.findByUrl(longUrl);
 
     if (urlEntity) {
@@ -60,14 +65,19 @@ export class UrlService implements IUrlService {
       return urlEntity.shortUrl;
     }
 
-    const newUrl = this.buildURLEntity(longUrl);
-    this.logger.verbose(`Creating new URL [${newUrl.shortUrl}]`);
+    const newUrlEntity = this.buildURLEntity(longUrl);
 
-    const newUrlEntity = await this.urlRepository.save(newUrl);
+    if (!newUrlEntity) {
+      this.logger.verbose('The id could not be encoded.');
+      return null;
+    }
 
-    await this.cacheService.save(newUrlEntity);
+    this.logger.verbose(`Creating new URL [${newUrlEntity.shortUrl}]`);
 
-    return newUrl.shortUrl!;
+    const entity = await this.urlRepository.save(newUrlEntity);
+    await this.cacheService.save(entity);
+
+    return entity.shortUrl;
   }
 
   /**
@@ -75,14 +85,21 @@ export class UrlService implements IUrlService {
    *
    * @private
    * @param {string} longUrl New URL Data Transfer Object.
-   * @return {Partial<UrlEntity>} Partial URL Class instance.
+   * @return {Partial<UrlEntity>|null} Partial URL Class instance.
    */
-  private buildURLEntity(longUrl: string): Partial<UrlEntity> {
+  private buildURLEntity(longUrl: string): Partial<UrlEntity> | null {
     const unixTimeId = Date.now().toString();
+
+    const encodedId = this.encoderService.encode(unixTimeId);
+
+    if (!encodedId) {
+      return null;
+    }
+
     return {
-      id: unixTimeId,
       longUrl,
-      shortUrl: this.encoderService.encode(unixTimeId),
+      id: unixTimeId,
+      shortUrl: encodedId,
     };
   }
 }

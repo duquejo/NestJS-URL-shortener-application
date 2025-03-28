@@ -14,4 +14,4 @@ import { mysqlClientFactory } from './factory/mysql-client.factory';
     CacheDatabaseModule,
   ],
 })
-export class UrlDatabaseModule {}
+export class PersistenceModule {}

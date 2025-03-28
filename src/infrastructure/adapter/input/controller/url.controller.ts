@@ -26,10 +26,22 @@ export class UrlController {
   ) {}
 
   @Post('/data/shorten')
-  async create(@Body() createRequestDto: CreateRequestDto): Promise<string> {
-    return this.commandBus.execute(
+  async create(
+    @Res() res: Response,
+    @Body() createRequestDto: CreateRequestDto,
+  ): Promise<void> {
+    const url = await this.commandBus.execute(
       new ShortenUrlCommand(createRequestDto.longUrl),
     );
+
+    if (!url) {
+      res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .send('Something went wrong.');
+      return;
+    }
+
+    res.status(HttpStatus.CREATED).send(url);
   }
 
   @Get(':id')
