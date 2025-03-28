@@ -1,8 +1,32 @@
 # URL Shortener architectural-reliable POC
 Design System Interview V1 (Book) practical hands-on use-case exercise.
 
+Proposed architecture:
+![Architecture Diagram](./architecture-diagram.png)
+
 ## Framework & Libraries
+__Main dependencies__
 - [Nest JS](https://github.com/nestjs/nest): framework TypeScript starter repository.
+  - @nestjs/cqrs: Provides CQRS Architecture pattern module.
+  - @nestjs/throttler: Provides retry and other resiliency strategies like Circuit breaker.
+  - @nestjs/typeorm & typeorm: Provides TypeORM capabilities, using diverse adapters like MySQL.
+  - class-transformer: Handles easily DTO/Class Entities transformation.
+  - class-validator: Enables DTO & Requests validation easily.
+- dotenv: Custom environment handling.
+- ioredis: Robust Redis client for Node.js.
+- joi: Provides a powerful type-safe schema validation.
+- mysql2: MySQL client for Node.js.
+- sqids: Small library for handling hash generation.
+
+__Development dependencies__
+- Jest: Preferred javascript testing library.
+- prettier: Format-ready code style rules & templates.
+- eslint & @eslint/eslintrc: Code quality library.
+- supertest: Assert-ready expressions for integration tests.
+- cross-env: simple windows/mac environment command platform support.
+- @commitlint/cli & @commitlint/config-conventional: Commitlint ready rules, enforcing best practice commit standards.
+- commitlint-config-gitmoji: Commitlint plugin for [visual commit-ready](https://gitmoji.dev/) guides.
+- husky: Enables hooks for commit-msg and pre-commit events, just for automation.
 
 ## Project setup
 
@@ -70,30 +94,3 @@ $ yarn run test:e2e
 # test coverage
 $ yarn run test:cov
 ```
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
