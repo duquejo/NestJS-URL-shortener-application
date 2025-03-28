@@ -1,7 +1,7 @@
 {
   "name": "uri-shortener-service",
   "version": "0.0.1",
-  "description": "",
+  "description": "URL shortened tinyurl based applied architecture.",
   "author": "José Miguel Duque",
   "private": true,
   "license": "UNLICENSED",

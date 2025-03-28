@@ -69,6 +69,11 @@ $ yarn install
 yarn run migration:run
 ```
 
+**Enable husky events**
+```bash
+yarn prepare
+```
+
 ## Compile and run the project
 
 ```bash
@@ -82,15 +87,35 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
+## Quality & formatting scripts
+```bash
+# linting
+$ yarn lint
+
+# format
+$ yarn format
+```
+
+## Migration commands
+```bash
+$ yarn migration:generate
+
+$ yarn migration:create
+
+$ yarn migration:run
+
+$ yarn migration:revert
+```
+
 ## Run tests
 
 ```bash
 # unit tests
-$ yarn run test
+$ yarn test:unit
 
 # e2e tests
-$ yarn run test:e2e
+$ yarn test:e2e
 
 # test coverage
-$ yarn run test:cov
+$ yarn test:coverage
 ```
